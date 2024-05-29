@@ -7,10 +7,7 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
 
-    //public GameObject btnTicTacToe_01;
-
-    //int sizeTicTacToeBtn = 0;
-    //sizeTicTacToeBtn = 9;
+    
     public GameObject[] btnTicTacToe;
     int nCurrentPlayerNumber;
     TMP_Text test_tmpText;
@@ -22,13 +19,11 @@ public class GameManager : MonoBehaviour
     void Start()
     {
 
-        Debug.Log("Hello world!!");
+        Debug.Log("Game Start!");
 
-        string strBtnName = btnTicTacToe[0].name;
-        //Debug.Log(strBtnName);
+        //string strBtnName = btnTicTacToe[0].name;
 
         nCurrentPlayerNumber = 1;
-
 
         Debug.Log("CurrentPlayerNumber: " + nCurrentPlayerNumber);
 
@@ -53,41 +48,32 @@ public class GameManager : MonoBehaviour
 
     public void TestMessage(int nBtnNumber)
     {
-        //string strMyName = this.name;
-        //Debug.Log("test btn clicked..");
-        //Debug.Log("btn " + nBtnNumber +" clicked..");
-
-        string tmp = btnTicTacToe[nBtnNumber].transform.GetChild(0).name;
-
-        //Text txtBtnNumber = btnTicTacToe[nBtnNumber].GetComponent<Text>();
-        //Debug.Log(tmp);
-
-        GameObject testGameObject = btnTicTacToe[nBtnNumber].transform.GetChild(0).gameObject;
-        //string myString = testGameObject.GetComponent<TMP_Text>().text;
-
-        //testGameObject.GetComponent<TMP_Text>().text = nBtnNumber.ToString();
-        testGameObject.GetComponent<TMP_Text>().text = nCurrentPlayerNumber.ToString();
-        arrGameMap[nBtnNumber] = nCurrentPlayerNumber;
-
-
-        //Debug.Log(myString);
-
-        if (nCurrentPlayerNumber == 1)
+        if(arrGameMap[nBtnNumber] == 0)
         {
-            nCurrentPlayerNumber = 2;
-        }
-        else if (nCurrentPlayerNumber == 2)
-        {
-            nCurrentPlayerNumber = 1;
-        }
+            string tmp = btnTicTacToe[nBtnNumber].transform.GetChild(0).name;
 
-        //Debug.Log("CurrentPlayerNumber: " + nCurrentPlayerNumber);
 
-        CheckRowSlotMatch();
-        CheckColumnSlotMatch();
-        CheckDiagonalSlotMatch();
+            GameObject testGameObject = btnTicTacToe[nBtnNumber].transform.GetChild(0).gameObject;
+            testGameObject.GetComponent<TMP_Text>().text = nCurrentPlayerNumber.ToString();
+            arrGameMap[nBtnNumber] = nCurrentPlayerNumber;
+
+            if (nCurrentPlayerNumber == 1)
+            {
+                nCurrentPlayerNumber = 2;
+            }
+            else if (nCurrentPlayerNumber == 2)
+            {
+                nCurrentPlayerNumber = 1;
+            }
+
+            CheckRowSlotMatch();
+            CheckColumnSlotMatch();
+            CheckDiagonalSlotMatch();
+        }
+        
 
     }
+
     void CheckRowSlotMatch()
     {
         int nRowNumber;
