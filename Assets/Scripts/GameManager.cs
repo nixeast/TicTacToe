@@ -9,29 +9,20 @@ public class GameManager : MonoBehaviour
 
     public UIManager MyUIManager;
     public GameObject[] btnTicTacToe;
+    GameObject btnSelectedButton;
     int nCurrentPlayerNumber;
     TMP_Text test_tmpText;
     int[] arrGameMap = new int[9];
     bool bIsMatched;
     int nWinnerNumber;
     int nMarkingCount;
+    int nMapSize;
 
     // Start is called before the first frame update
     void Start()
     {
-
-        Debug.Log("Game Start!");
-
-        nCurrentPlayerNumber = 1;
-        MyUIManager.UpdateCurrentPlayerNumberOnDisplay(nCurrentPlayerNumber);
-
-        Debug.Log("CurrentPlayerNumber: " + nCurrentPlayerNumber);
-
-        for (int i = 0; i < 9; i++)
-        {
-            arrGameMap[i] = 0;
-        }
-
+        InitMap();
+        SetUpCurrentPlayerNumber();
         bIsMatched = false;
         nWinnerNumber = 0;
         nMarkingCount = 0;
@@ -47,11 +38,8 @@ public class GameManager : MonoBehaviour
     {
         if(arrGameMap[nBtnNumber] == 0)
         {
-            string tmp = btnTicTacToe[nBtnNumber].transform.GetChild(0).name;
-
-
-            GameObject testGameObject = btnTicTacToe[nBtnNumber].transform.GetChild(0).gameObject;
-            testGameObject.GetComponent<TMP_Text>().text = nCurrentPlayerNumber.ToString();
+            btnSelectedButton = btnTicTacToe[nBtnNumber].transform.GetChild(0).gameObject;
+            btnSelectedButton.GetComponent<TMP_Text>().text = nCurrentPlayerNumber.ToString();
             arrGameMap[nBtnNumber] = nCurrentPlayerNumber;
 
             if (nCurrentPlayerNumber == 1)
@@ -74,49 +62,57 @@ public class GameManager : MonoBehaviour
     void CheckRowSlotMatch()
     {
         int nRowNumber;
-        int nSlotNumber;
-       
+        int nSlotNumber1;
+        int nSlotNumber2;
+        int nSlotNumber3;
+
         nRowNumber = 0;
-        nSlotNumber = 0;
-        
+        nSlotNumber1 = 0;
+        nSlotNumber2 = nSlotNumber1 + 1;
+        nSlotNumber3 = nSlotNumber1 + 2;
         while (nRowNumber <= 2)
         {
-            if (arrGameMap[nSlotNumber] != 0 && arrGameMap[nSlotNumber] == arrGameMap[nSlotNumber + 1] && arrGameMap[nSlotNumber] == arrGameMap[nSlotNumber + 2])
+            if (arrGameMap[nSlotNumber1] != 0 && arrGameMap[nSlotNumber1] == arrGameMap[nSlotNumber2] && arrGameMap[nSlotNumber1] == arrGameMap[nSlotNumber3])
             {
-                //Debug.Log("Matched!");
                 bIsMatched = true;
-                nWinnerNumber = arrGameMap[nSlotNumber];
+                nWinnerNumber = arrGameMap[nSlotNumber1];
                 ShowWinner();
                 MyUIManager.ShowGameResult(nWinnerNumber);
                 StopGmaePlay();
             }
 
             nRowNumber++;
-            nSlotNumber = nRowNumber * 3;
+            nSlotNumber1 = nRowNumber * 3;
+            nSlotNumber2 = nSlotNumber1 + 1;
+            nSlotNumber3 = nSlotNumber1 + 2;
         }
     }
     void CheckColumnSlotMatch()
     {
         int nColumnNumber;
-        int nSlotNumber;
+        int nSlotNumber1;
+        int nSlotNumber2;
+        int nSlotNumber3;
 
         nColumnNumber = 0;
-        nSlotNumber = 0;
-
+        nSlotNumber1 = 0;
+        nSlotNumber2 = nSlotNumber1 + 3;
+        nSlotNumber3 = nSlotNumber1 + 6;
         while (nColumnNumber <= 2)
         {
-            if (arrGameMap[nSlotNumber] != 0 && arrGameMap[nSlotNumber] == arrGameMap[nSlotNumber + 3] && arrGameMap[nSlotNumber] == arrGameMap[nSlotNumber + 6])
+            if (arrGameMap[nSlotNumber1] != 0 && arrGameMap[nSlotNumber1] == arrGameMap[nSlotNumber2] && arrGameMap[nSlotNumber1] == arrGameMap[nSlotNumber3])
             {
-                //Debug.Log("Matched!");
                 bIsMatched = true;
-                nWinnerNumber = arrGameMap[nSlotNumber];
+                nWinnerNumber = arrGameMap[nSlotNumber1];
                 ShowWinner();
                 MyUIManager.ShowGameResult(nWinnerNumber);
                 StopGmaePlay();
             }
 
             nColumnNumber++;
-            nSlotNumber = nColumnNumber;
+            nSlotNumber1 = nColumnNumber;
+            nSlotNumber2 = nSlotNumber1 + 3;
+            nSlotNumber3 = nSlotNumber1 + 6;
         }
     }
 
@@ -132,7 +128,6 @@ public class GameManager : MonoBehaviour
 
         if (arrGameMap[nFirstSlotNumber] != 0 && arrGameMap[nFirstSlotNumber] == arrGameMap[nSecondSlotNumber] && arrGameMap[nFirstSlotNumber] == arrGameMap[nThirdSlotNumber])
         {
-            //Debug.Log("Matched!");
             bIsMatched = true;
             nWinnerNumber = arrGameMap[nFirstSlotNumber];
             ShowWinner();
@@ -146,7 +141,6 @@ public class GameManager : MonoBehaviour
 
         if (arrGameMap[nFirstSlotNumber] != 0 && arrGameMap[nFirstSlotNumber] == arrGameMap[nSecondSlotNumber] && arrGameMap[nFirstSlotNumber] == arrGameMap[nThirdSlotNumber])
         {
-            //Debug.Log("Matched!");
             bIsMatched = true;
             nWinnerNumber = arrGameMap[nFirstSlotNumber];
             ShowWinner();
@@ -182,6 +176,23 @@ public class GameManager : MonoBehaviour
         {
             StopGmaePlay();
             MyUIManager.ShowGameResult(0);
+        }
+    }
+
+    void SetUpCurrentPlayerNumber()
+    {
+        nCurrentPlayerNumber = 1;
+        MyUIManager.UpdateCurrentPlayerNumberOnDisplay(nCurrentPlayerNumber);
+    }
+
+    void InitMap()
+    {
+        int nCount;
+
+        nCount = 0;
+        while (nCount < nMapSize)
+        {
+            arrGameMap[nCount] = 0;
         }
     }
 }
